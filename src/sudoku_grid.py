@@ -1,42 +1,47 @@
 # Write your solution here
+def row_correct(sudoku: list, row_num: int):
+    numbers = []
+    for num in sudoku[row_num]:
+        if num > 0 and num in numbers:
+            return False
+        numbers.append(num)
+
+    return True
+
+def column_correct(sudoku: list, col_num: int):
+    numbers = []
+    for row in sudoku:
+        num = row[col_num]
+        if num > 0 and num in numbers:
+            return False
+        numbers.append(num)
+
+    return True
+
+def block_correct(sudoku: list, row_no: int, column_no: int):
+    numbers = []
+    for r in range(row_no, row_no+3):
+        for s in range(column_no, column_no+3):
+            number = sudoku[r][s]
+            if number > 0 and number in numbers:
+                return False
+            numbers.append(number)
+ 
+    return True
+
 def sudoku_grid_correct(sudoku: list):
-    block = []
-    row_cord = 0
-    col_cord = 0
+    for row in range(0,9):
+        if not row_correct(sudoku, row):
+            return False
     
-    while row_cord < len(sudoku):
-        for r in range(row_cord, row_cord+3):
-            for c in range(col_cord, col_cord + 3):
-                number = sudoku [r][c]
-                if number > 0 and number in block:
-                    return False
-                block.append(number)
-                
-        
-        if col_cord+3 == 9:
-            row_cord+=3
-            col_cord = 0
-        else:
-            col_cord += 3
-        
-        block = []
+    for col in range(0,9):
+        if not column_correct(sudoku, col):
+            return False
     
-    while row_cord < len(sudoku):
-        block = []
-        for num in sudoku[row_cord]:
-            if num > 0 and num in block:
+    for row in range(0,9,3):
+        for col in range(0,9,3):
+            if not block_correct(sudoku, row, col):
                 return False
-            block.append(num)
-        row_cord += 1
-        
-    
-    while col_cord < len(sudoku):
-        block = []
-        for row in sudoku:
-            if row[col_cord] > 0 and row[col_cord] in block:
-                return False
-            block.append(row[col_cord])
-        col_cord += 1       
 
     return True
 
